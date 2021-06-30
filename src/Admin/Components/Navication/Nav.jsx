@@ -1,37 +1,34 @@
-import React from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-  } from "react-router-dom";
 
-import HomePage from '../../Pages/HomePage/HomePage';
-import Contact from '../../Pages/Contact/Contact';
+import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Drawer, Button } from 'antd'
+import { MenuOutlined  } from '@ant-design/icons'
 
 function Nav(props) {
-    return (
-    <Router>
-        <div>
-          <ul>
-            <li>
-              <Link to="/homepage">Home</Link>
-            </li>
-            <li>
-              <Link to="/contact">Contact</Link>
-            </li>
-            
-          </ul> 
-          <Switch>
-            <Route path="/homepage">
-              <HomePage />
-            </Route>
-            <Route path="/contact">
-              <Contact />
-            </Route> 
-          </Switch>
-        </div>
-      </Router>
+    const [visible, setVisible] = useState(false);
+    const showDrawer = () => {
+      setVisible(true);
+    };
+    const onClose = () => {
+      setVisible(false);
+    };
+      return ( 
+        <> 
+        <Button type="primary" onClick={showDrawer}>
+          <MenuOutlined  />
+        </Button>
+          <Drawer
+            title="Dashboard"
+            placement="left"
+            closable={false}
+            onClose={onClose}
+            visible={visible}
+          >
+            <Link onClick={() => setVisible(false)} to="/">Home</Link>
+            <Link onClick={() => setVisible(false)} to="/contact">Contact</Link>
+            <Link onClick={() => setVisible(false)} to="/settings">Settings</Link> 
+          </Drawer> 
+        </> 
     );
 }
 
