@@ -1,33 +1,52 @@
 
 import { Link } from "react-router-dom";
-import React, { useState } from 'react';
-import { Drawer, Button } from 'antd'
-import { MenuOutlined  } from '@ant-design/icons'
+import React, { useState } from 'react'; 
 
-function Nav(props) {
-    const [visible, setVisible] = useState(false);
-    const showDrawer = () => {
-      setVisible(true);
-    };
-    const onClose = () => {
-      setVisible(false);
+import { Layout, Menu } from 'antd';
+import {
+  DesktopOutlined,
+  PieChartOutlined,
+  FileOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons'; 
+
+const { Sider } = Layout;
+const { SubMenu } = Menu; 
+
+
+function Nav() { 
+
+    const [collapsed, setCollapsed] = useState(true)
+    const onCollapse = () => { 
+        setCollapsed(!collapsed)
     };
       return ( 
-        <> 
-        <Button type="primary" onClick={showDrawer}>
-          <MenuOutlined  />
-        </Button>
-          <Drawer
-            title="Dashboard"
-            placement="left"
-            closable={false}
-            onClose={onClose}
-            visible={visible}
-          >
-            <Link onClick={() => setVisible(false)} to="/">Home</Link>
-            <Link onClick={() => setVisible(false)} to="/contact">Contact</Link>
-            <Link onClick={() => setVisible(false)} to="/settings">Settings</Link> 
-          </Drawer> 
+        <>   
+        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+            <div className="logo" >Chổ để logo</div>
+            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                <Menu.Item key="1" icon={<PieChartOutlined />}>
+                 <Link to='/'>Home Page</Link>
+                </Menu.Item>
+                <Menu.Item key="2" icon={<DesktopOutlined />}>
+                <Link to='/contact'>Contact</Link>
+                </Menu.Item>
+                <Menu.Item key="9" icon={<FileOutlined />}>
+                  <Link to='/settings'>Setting</Link>
+                </Menu.Item>
+                <SubMenu key="sub1" icon={<UserOutlined />} title="User">
+                    <Menu.Item key="3">Tom</Menu.Item>
+                    <Menu.Item key="4">Bill</Menu.Item>
+                    <Menu.Item key="5">Alex</Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
+                    <Menu.Item key="6">Team 1</Menu.Item>
+                    <Menu.Item key="8">Team 2</Menu.Item>
+                </SubMenu>
+               
+            </Menu>
+            </Sider>
         </> 
     );
 }

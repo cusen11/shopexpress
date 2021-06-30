@@ -10,29 +10,34 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+ 
 
+
+import { Layout } from 'antd';  
 
 function App() {
-  const [login, setLogin] = useState(true)
+  const [login, setLogin] = useState(true) 
   return (
     <>
       {!login ? <Login/> 
       : 
-      <Router>
-        <Nav/>
-        <Switch>
-          <Route exact path="/">
-            <HomePage/>
-          </Route>
-          <Route path="/contact">
-            <Contact />
-          </Route>  
-          <Route path="/settings">
-            <Settings />
-          </Route>  
-        </Switch>
-    </Router> 
-      
+        <Router>
+          <Layout style={{ minHeight: '100vh' }}> 
+            
+            <Nav/> 
+            <Switch>
+            <Route exact path="/">
+              <HomePage/>
+            </Route>
+            <Route path="/contact">
+              <Contact />
+            </Route>  
+            <Route path="/settings">
+              <Settings />
+            </Route>  
+          </Switch>
+      </Layout>  
+      </Router>  
       }
       
     </>
