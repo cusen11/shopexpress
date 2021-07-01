@@ -1,21 +1,18 @@
 import { Layout, Breadcrumb } from 'antd';  
-const { Header, Content, Footer } = Layout; 
 
     
 function Settings() {  
+    const { Content } = Layout;  
     return (
-        <Layout className="site-layout">
-            <Header className="site-layout-background" style={{ padding: 0 }} />
+        <Layout className="site-layout"> 
                 <Content style={{ margin: '0 16px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item>User</Breadcrumb.Item>
-                    <Breadcrumb.Item>Bill</Breadcrumb.Item>
+                    <Breadcrumb style={{ margin: '16px 0' }}> 
+                    <Breadcrumb.Item>Settings</Breadcrumb.Item>
                     </Breadcrumb>
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                     Settings
                     </div>
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                </Content> 
         </Layout>
     );
 }

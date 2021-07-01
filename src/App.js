@@ -5,15 +5,13 @@ import HomePage from './Admin/Pages/HomePage/HomePage';
 import Contact from './Admin/Pages/Contact/Contact';
 import Nav from './Admin/Components/Navication/Nav';
 import Settings from './Admin/Pages/Settings/Setting';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
- 
+import Products from './Admin/Pages/Products/Products';
+import GiftCode from './Admin/Pages/GiftCode/GiftCode'; 
+import {  BrowserRouter as Router,Switch,Route} from "react-router-dom";
+import { Layout } from 'antd'; 
 
 
-import { Layout } from 'antd';  
+const { Footer } = Layout
 
 function App() {
   const [login, setLogin] = useState(true) 
@@ -22,8 +20,7 @@ function App() {
       {!login ? <Login/> 
       : 
         <Router>
-          <Layout style={{ minHeight: '100vh' }}> 
-            
+          <Layout style={{ minHeight: '100vh' }}>  
             <Nav/> 
             <Switch>
             <Route exact path="/">
@@ -35,8 +32,15 @@ function App() {
             <Route path="/settings">
               <Settings />
             </Route>  
-          </Switch>
-      </Layout>  
+            <Route path="/products">
+              <Products />
+            </Route> 
+            <Route path="/gift">
+              <GiftCode />
+            </Route> 
+          </Switch>  
+        </Layout>
+        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>  
       </Router>  
       }
       
