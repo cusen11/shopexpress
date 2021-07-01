@@ -9,6 +9,7 @@ import Products from './Admin/Pages/Products/Products';
 import GiftCode from './Admin/Pages/GiftCode/GiftCode'; 
 import {  BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout } from 'antd'; 
+import "lightgallery.js/dist/css/lightgallery.css";
 
 
 const { Footer } = Layout
@@ -19,8 +20,8 @@ function App() {
     <>
       {!login ? <Login/> 
       : 
-        <Router>
-          <Layout style={{ minHeight: '100vh' }}>  
+        <Router> 
+          <Layout style={{ minHeight: '100vh' }}> 
             <Nav/> 
             <Switch>
             <Route exact path="/">

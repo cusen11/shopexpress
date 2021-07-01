@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import React, { useState } from 'react'; 
 import { Typography } from "antd";
@@ -18,7 +17,7 @@ function Nav() {
     const { Sider } = Layout;
     const { SubMenu } = Menu; 
     const { Title, Text } = Typography
-    const [collapsed, setCollapsed] = useState(true)
+    const [collapsed, setCollapsed] = useState(false)
     const onCollapse = () => { 
         setCollapsed(!collapsed)
     };
