@@ -63,7 +63,7 @@ function Nav() {
                 <Menu.Item key="5" icon={<SettingOutlined />}>
                   <Link to='/settings'>Setting</Link>
                 </Menu.Item>
-                <Menu.Item key="6" icon={<UserOutlined />}>
+                <Menu.Item key="7" icon={<UserOutlined />}>
                   <Link to='/users'>User</Link>
                 </Menu.Item>
             </Menu>

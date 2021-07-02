@@ -9,7 +9,7 @@ import Products from './Admin/Pages/Products/Products';
 import GiftCode from './Admin/Pages/GiftCode/GiftCode'; 
 import Users from './Admin/Pages/Users/Users';
 import {  BrowserRouter as Router,Switch,Route} from "react-router-dom";
-import { Layout } from 'antd'; 
+import { Layout,Button } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
 
 
@@ -17,13 +17,16 @@ const { Footer } = Layout
 
 function App() {
   const [login, setLogin] = useState(true) 
+
   return (
     <>
       {!login ? <Login/> 
       : 
         <Router> 
+          
           <Layout style={{ minHeight: '100vh' }}> 
             <Nav/> 
+            <Button hidden onClick={()=> setLogin(false)}>Logout</Button>
             <Switch>
             <Route exact path="/">
               <HomePage/>
