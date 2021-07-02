@@ -1,7 +1,8 @@
 import { 
     Layout, Row, Input,
     Col, Typography, Button, 
-    Image, Drawer,Radio 
+    Image, Drawer,Radio,
+    Pagination  
 
 } from 'antd';   
 import { useState } from 'react';
@@ -18,8 +19,7 @@ function Products() {
     const onClose = () => {
       setVisible(false);
     };
-    const onChangeRadio = e => {
-        console.log('radio checked', e.target.value);
+    const onChangeRadio = e => { 
         setValueRadio(e.target.value);
     };
     const styleItem = {
@@ -34,11 +34,18 @@ function Products() {
     const onSearch = (value) =>{
         console.log(value)
     }
+
+    const onShowSizeChange = (current, pageSize) =>{
+        console.log(current, pageSize);
+      }
+    const PaginationChange = (page) =>{
+        console.log(page);
+    }
     return (
         <Layout className="site-layout"> 
             <Content style={{ margin: '0 16px' }}>
                 <Title type='success' level={1}>Products</Title>  
-                <Search placeholder="input search text" onSearch={onSearch} enterButton style={{ width: 300 }} /> 
+                <Search placeholder="Tìm sản phẩm" onSearch={onSearch} enterButton style={{ width: 300 }} /> 
                 <Row gutter={30}> 
                     <Col xs={24} md={24}>  
                     <Radio.Group onChange={onChangeRadio} value={valueRadio}> 
@@ -47,6 +54,7 @@ function Products() {
                         <Radio value={7}>3 Row</Radio>
                     </Radio.Group> 
                     <Row> 
+                        <Paragraph italic style={{width:'100%'}}>Tên sản phẩm | Giá | Danh mục</Paragraph>
                         {
                             [...Array(20)].map((e, i) => 
                                 <Col key={i} md={valueRadio} xs={24}>
@@ -59,8 +67,8 @@ function Products() {
                                                 setVisible(true)
                                             }}
                                             >
-                                                {i+1}. Dầu gội đầu hương cam xả
-                                            </Text> 
+                                                {i+1}. Dầu gội đầu hương cam xả | 200.000đ | Thời trang
+                                            </Text>  
                                     </Title>  
                                 </Col>
                             )
@@ -116,6 +124,16 @@ function Products() {
                     </Col>
                     
                 </Row>
+                <Row gutter={10} justify='center' align='middle'>
+                    <Pagination 
+                        showSizeChanger
+                        onShowSizeChange={onShowSizeChange}
+                        defaultCurrent={3}
+                        total={500}
+                        onChange = {PaginationChange}
+                    /> 
+                </Row>
+                
             </Content> 
         </Layout>
     );
