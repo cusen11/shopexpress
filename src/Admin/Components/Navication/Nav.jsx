@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useState } from 'react'; 
 import { Typography } from "antd";
 import { Layout, Menu, Avatar,Col, Row } from 'antd';
-import {
-  DesktopOutlined,
+import { 
   DashboardOutlined,
   SettingOutlined,
   TeamOutlined,
@@ -45,9 +44,6 @@ function Nav() {
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"> 
                 <Menu.Item key="1" icon={<DashboardOutlined />}>
                  <Link to='/'>Dashboard</Link>
-                </Menu.Item>
-                <Menu.Item key="2" icon={<DesktopOutlined />}>
-                <Link to='/contact'>Contact</Link>
                 </Menu.Item> 
                 <Menu.Item key="3" icon={<DingtalkOutlined />}>
                   <Link to='/products'>Products</Link>
