@@ -1,8 +1,7 @@
 import { 
     Layout, Row, Input,
     Col, Typography, Button, 
-    Image, Drawer,Radio,
-    Pagination  
+    Image, Drawer,Pagination  
 
 } from 'antd';   
 import { useState } from 'react';
@@ -14,14 +13,10 @@ function Products() {
     const { Search } = Input
     const { Text, Title, Paragraph} = Typography
     const [item, setItem] = useState()
-    const [visible, setVisible] = useState(false); 
-    const [valueRadio, setValueRadio] = useState(24); 
+    const [visible, setVisible] = useState(false);  
     const onClose = () => {
       setVisible(false);
-    };
-    const onChangeRadio = e => { 
-        setValueRadio(e.target.value);
-    };
+    }; 
     const styleItem = {
         width: '95%',
         height: '35px',
@@ -47,33 +42,28 @@ function Products() {
                 <Title type='success' level={1}>Products</Title>  
                 <Search placeholder="Tìm sản phẩm" onSearch={onSearch} enterButton style={{ width: 300 }} /> 
                 <Row gutter={30}> 
-                    <Col xs={24} md={24}>  
-                    <Radio.Group onChange={onChangeRadio} value={valueRadio}> 
-                        <Radio selected value={24}>1 Row</Radio>  
-                        <Radio value={12}>2 Row</Radio>
-                        <Radio value={7}>3 Row</Radio>
-                    </Radio.Group> 
-                    <Row> 
-                        <Paragraph italic style={{width:'100%'}}>Tên sản phẩm | Giá | Danh mục</Paragraph>
-                        {
-                            [...Array(20)].map((e, i) => 
-                                <Col key={i} md={valueRadio} xs={24}>
-                                    <Title level={5} style={styleItem}> 
-                                            <Text  
-                                            ellipsis
-                                            style={{width:"70%", cursor:"pointer"}}
-                                            onClick={()=>{
-                                                setItem(i+1) 
-                                                setVisible(true)
-                                            }}
-                                            >
-                                                {i+1}. Dầu gội đầu hương cam xả | 200.000đ | Thời trang
-                                            </Text>  
-                                    </Title>  
-                                </Col>
-                            )
-                        }
-                    </Row>
+                    <Col xs={24} md={24}>   
+                        <Row> 
+                            <Paragraph italic style={{width:'100%'}}>Tên sản phẩm | Giá | Danh mục</Paragraph>
+                            {
+                                [...Array(20)].map((e, i) => 
+                                    <Col key={i} md={24} xs={24}>
+                                        <Title level={5} style={styleItem}> 
+                                                <Text  
+                                                ellipsis
+                                                style={{width:"70%", cursor:"pointer"}}
+                                                onClick={()=>{
+                                                    setItem(i+1) 
+                                                    setVisible(true)
+                                                }}
+                                                >
+                                                    {i+1}. Dầu gội đầu hương cam xả | 200.000đ | Thời trang
+                                                </Text>  
+                                        </Title>  
+                                    </Col>
+                                )
+                            }
+                        </Row>
                     </Col>
                     <Drawer width="60%"
                         title={`Dầu gội đầu hương cam xả ${item}`}
@@ -94,10 +84,7 @@ function Products() {
                             <Title level={5}>Khuyến mãi : 20%</Title>
                             <Title level={5}>Category : Quần áo</Title>
                             
-                            <Row gutter={10} justify='end' align='middle'>
-                                <Button size='middle' type="primary">Edit</Button>  
-                                <Button size='middle' type="primary" danger>Delete</Button>
-                            </Row>
+                            <Button size='middle' type="primary">Edit Product</Button>  
                             <Title level={4}>List Image</Title>
                             <LightgalleryProvider>
                                 <Row gutter="10">
@@ -112,17 +99,13 @@ function Products() {
                                         )
                                     } 
                                 </Row>
-                            </LightgalleryProvider> 
+                            </LightgalleryProvider>  
+                            <Button size='middle' type="primary">Edit List Image</Button> 
                             <Row gutter={10} justify='end' align='middle'>
-                                <Button size='middle' type="primary">Edit</Button>  
-                                <Button size='middle' type="primary" danger>Delete</Button>
-                            </Row>
+                            <Button size='middle' type="primary" danger>Delete</Button> 
+                            </Row> 
                         </Col> 
-                    </Drawer>
-                    <Col xs={14} md={14}>  
-                        
-                    </Col>
-                    
+                    </Drawer>  
                 </Row>
                 <Row gutter={10} justify='center' align='middle'>
                     <Pagination 
@@ -130,7 +113,7 @@ function Products() {
                         onShowSizeChange={onShowSizeChange}
                         defaultCurrent={3}
                         total={500}
-                        onChange = {PaginationChange}
+                        onChange={PaginationChange}
                     /> 
                 </Row>
                 

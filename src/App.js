@@ -7,6 +7,7 @@ import Nav from './Admin/Components/Navication/Nav';
 import Settings from './Admin/Pages/Settings/Setting';
 import Products from './Admin/Pages/Products/Products';
 import GiftCode from './Admin/Pages/GiftCode/GiftCode'; 
+import Users from './Admin/Pages/Users/Users';
 import {  BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
@@ -39,6 +40,9 @@ function App() {
             <Route path="/gift">
               <GiftCode />
             </Route> 
+            <Route path="/users">
+              <Users />
+            </Route>
           </Switch>  
         </Layout>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>  

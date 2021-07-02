@@ -52,11 +52,7 @@ function Nav() {
                 <Menu.Item key="3" icon={<DingtalkOutlined />}>
                   <Link to='/products'>Products</Link>
                 </Menu.Item>
-                <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-                    <Menu.Item key="30">Tom</Menu.Item>
-                    <Menu.Item key="40">Bill</Menu.Item>
-                    <Menu.Item key="50">Alex</Menu.Item>
-                </SubMenu>
+               
                 <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
                     <Menu.Item key="6">Team 1</Menu.Item>
                     <Menu.Item key="8">Team 2</Menu.Item>
@@ -66,6 +62,9 @@ function Nav() {
                 </Menu.Item>
                 <Menu.Item key="5" icon={<SettingOutlined />}>
                   <Link to='/settings'>Setting</Link>
+                </Menu.Item>
+                <Menu.Item key="6" icon={<UserOutlined />}>
+                  <Link to='/users'>User</Link>
                 </Menu.Item>
             </Menu>
         </Sider>
