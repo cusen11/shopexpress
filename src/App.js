@@ -10,6 +10,7 @@ import Users from './Admin/Pages/Users/Users';
 import {  BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout,Button } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
+import Blogs from './Admin/Pages/Blogs/Blogs';
 
 
 const { Footer } = Layout
@@ -41,6 +42,9 @@ function App() {
             </Route> 
             <Route path="/users">
               <Users />
+            </Route>/
+            <Route path="/blogs">
+              <Blogs />
             </Route>
           </Switch>  
         </Layout>

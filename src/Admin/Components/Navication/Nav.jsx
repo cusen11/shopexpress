@@ -8,6 +8,7 @@ import {
   TeamOutlined,
   UserOutlined,
   DingtalkOutlined,
+  EditOutlined
 } from '@ant-design/icons'; 
 
 
@@ -50,17 +51,21 @@ function Nav() {
                 </Menu.Item>
                
                 <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-                    <Menu.Item key="6">Team 1</Menu.Item>
-                    <Menu.Item key="8">Team 2</Menu.Item>
+                    <Menu.Item key="60">Team 1</Menu.Item>
+                    <Menu.Item key="80">Team 2</Menu.Item>
                 </SubMenu> 
                 <Menu.Item key="4" icon={<SettingOutlined />}>
                   <Link to='/gift'>GiftCode</Link>
                 </Menu.Item>
-                <Menu.Item key="5" icon={<SettingOutlined />}>
-                  <Link to='/settings'>Setting</Link>
+                <Menu.Item key="5" icon={<EditOutlined />}>
+                  <Link to='/blogs'>Blog</Link>
                 </Menu.Item>
+                
                 <Menu.Item key="7" icon={<UserOutlined />}>
                   <Link to='/users'>User</Link>
+                </Menu.Item>
+                <Menu.Item key="8" icon={<SettingOutlined />}>
+                  <Link to='/settings'>Setting</Link>
                 </Menu.Item>
             </Menu>
         </Sider>
