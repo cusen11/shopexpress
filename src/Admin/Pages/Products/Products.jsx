@@ -73,7 +73,7 @@ function Products() {
                         visible={visible}
                     >
                         <Col xs={24} md={24}>  
-                            <Image
+                            <Image preview={false}
                                 width={200}
                                 src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
                             /> 
