@@ -6,13 +6,14 @@ import Nav from './Admin/Components/Navication/Nav';
 import Settings from './Admin/Pages/Settings/Setting';
 import Products from './Admin/Pages/Products/Products';
 import GiftCode from './Admin/Pages/GiftCode/GiftCode'; 
+import Header from './Admin/Components/Header/Header';
 import Users from './Admin/Pages/Users/Users';
-import {  BrowserRouter as Router,Switch,Route} from "react-router-dom";
+import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout,Button } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
 import Blogs from './Admin/Pages/Blogs/Blogs'; 
 
-const { Header,Content, Footer } = Layout
+const { Content, Footer } = Layout
 
 function App() {
   const [login, setLogin] = useState(true) 
@@ -26,7 +27,7 @@ function App() {
             <Nav/>
             <Button hidden onClick={()=> setLogin(false)} >Logout</Button> 
             <Layout>
-              <Header>Đây là header</Header>
+              <Header/>
               <Content style={{minHeight:'100vh'}}>
                 <Switch>
                   <Route exact path="/">
