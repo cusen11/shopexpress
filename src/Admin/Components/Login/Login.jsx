@@ -1,31 +1,32 @@
 import React from 'react';
 import { Form, Input, Button, Row, Col, Card,Typography  } from 'antd'; 
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from './LoginSlice'
 
-function Login() { 
-    const onFinish = (values) => { 
-        console.log('Success:', values); 
-        const loginPage = () =>{
-            const link = 'https://sendeptraidb.herokuapp.com/api/login';
-            const option = {
-                method:'POST',
-                headers: {
+function Login() {  
+    const dispatch = useDispatch()
+    const onFinish = (values) => {  
+        axios(
+            {
+                method:'post',
+                url:'https://sendeptraidb.herokuapp.com/api/login',
+                headers:{
                     'Content-Type': 'application/json',
                 },
-                body: values
-            }
-            fetch(link, option)
-            .then(res => res.json)
-            .then(data=>{
-                console.log(data)
+                data:values
             })
-        }
-        loginPage()
-    };
+          .then(res => {
+            dispatch(login(res.data))
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }; 
     const { Title } = Typography;
     const style={
         height: "100vh"
-    }
-   
+    } 
     return (
         <Row justify="center" align="middle" style={style}>
             <Col x2={12} md={8} > 

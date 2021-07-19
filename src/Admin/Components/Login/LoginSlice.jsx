@@ -1,24 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-const initialState = {
-  value: 0,
-}
+import { createSlice } from '@reduxjs/toolkit' 
 
 export const loginSlice = createSlice({
   name: 'login',
-  initialState,
+  initialState:{
+    value:{
+      success: false,
+      message:'failed to login!!!',
+      accessToken: ''
+    }
+  },
   reducers: {
     login: (state, actions) => {
-      state = actions.payload
+      state.value = actions.payload
     },
     logout: (state) => {
-      state.value -= 1
+      state.value = {
+        success: false,
+        message:'failed to login!!!',
+        accessToken: ''
+      }
     },
     
   },
 })
-
-// Action creators are generated for each case reducer function
+ 
 export const { login, logout  } = loginSlice.actions
 
 export default loginSlice.reducer

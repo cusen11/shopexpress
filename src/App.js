@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import Login from './Admin/Components/Login/Login';  
 import HomePage from './Admin/Pages/HomePage/HomePage'; 
@@ -11,22 +11,22 @@ import Users from './Admin/Pages/Users/Users';
 import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout,Button } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
-import Blogs from './Admin/Pages/Blogs/Blogs'; 
-import { store } from './app/store'
-import { Provider } from 'react-redux'
-const { Content, Footer } = Layout
-
+import Blogs from './Admin/Pages/Blogs/Blogs';  
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from './Admin/Components/Login/LoginSlice'
 function App() {
-  const [login, setLogin] = useState(false) 
   
-  return (
-    <Provider store={store}>
-      {!login ? <Login/> 
+  const { Content, Footer } = Layout
+  const dispatch = useDispatch()
+  const loginState = useSelector(store => store.login.value.success)  
+  return (  
+    <>
+      {!loginState ? <Login/> 
       : 
         <Router>   
           <Layout>
             <Nav/>
-            <Button hidden onClick={()=> setLogin(false)} >Logout</Button> 
+            <Button onClick={()=>dispatch(logout())  } >Logout</Button> 
             <Layout>
               <Header/>
               <Content style={{minHeight:'100vh'}}>
@@ -56,8 +56,8 @@ function App() {
           </Layout>
           
       </Router>  
-      }
-    </Provider>
+      } 
+    </>
   );
 }
 
