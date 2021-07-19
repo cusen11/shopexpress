@@ -3,13 +3,29 @@ import { Form, Input, Button, Row, Col, Card,Typography  } from 'antd';
 
 function Login() { 
     const onFinish = (values) => { 
-        console.log('Success:', values);
-        window.location.href = "/homepage";
+        console.log('Success:', values); 
+        const loginPage = () =>{
+            const link = 'https://sendeptraidb.herokuapp.com/api/login';
+            const option = {
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: values
+            }
+            fetch(link, option)
+            .then(res => res.json)
+            .then(data=>{
+                console.log(data)
+            })
+        }
+        loginPage()
     };
     const { Title } = Typography;
     const style={
         height: "100vh"
     }
+   
     return (
         <Row justify="center" align="middle" style={style}>
             <Col x2={12} md={8} > 

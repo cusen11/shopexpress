@@ -12,14 +12,15 @@ import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout,Button } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
 import Blogs from './Admin/Pages/Blogs/Blogs'; 
-
+import { store } from './app/store'
+import { Provider } from 'react-redux'
 const { Content, Footer } = Layout
 
 function App() {
-  const [login, setLogin] = useState(true) 
+  const [login, setLogin] = useState(false) 
   
   return (
-    <>
+    <Provider store={store}>
       {!login ? <Login/> 
       : 
         <Router>   
@@ -56,8 +57,7 @@ function App() {
           
       </Router>  
       }
-      
-    </>
+    </Provider>
   );
 }
 
