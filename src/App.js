@@ -9,15 +9,13 @@ import GiftCode from './Admin/Pages/GiftCode/GiftCode';
 import Header from './Admin/Components/Header/Header';
 import Users from './Admin/Pages/Users/Users';
 import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
-import { Layout,Button } from 'antd'; 
+import { Layout } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
 import Blogs from './Admin/Pages/Blogs/Blogs';  
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from './Admin/Components/Login/LoginSlice'
+import { useSelector } from 'react-redux';
 function App() {
   
-  const { Content, Footer } = Layout
-  const dispatch = useDispatch()
+  const { Content, Footer } = Layout 
   const loginState = useSelector(store => store.login.value.success)  
   return (  
     <>
@@ -25,8 +23,7 @@ function App() {
       : 
         <Router>   
           <Layout>
-            <Nav/>
-            <Button onClick={()=>dispatch(logout())  } >Logout</Button> 
+            <Nav/> 
             <Layout>
               <Header/>
               <Content style={{minHeight:'100vh'}}>

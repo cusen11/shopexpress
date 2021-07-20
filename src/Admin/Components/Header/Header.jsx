@@ -1,7 +1,10 @@
 import React from 'react';
 import { Layout,Avatar,Col, Row, Button } from 'antd'
+import { logout } from '../Login/LoginSlice'
+import { useDispatch } from 'react-redux';
 
 function Header() {
+    const dispatch = useDispatch()
     const { Header } = Layout  
     return (
         <Header>
@@ -10,10 +13,10 @@ function Header() {
                 align="middle"
                 style={{height:"60px"}}>
                 <Col align="middle">  
-                    <Avatar size='default'>S </Avatar>    
+                    <Avatar size='default'>S</Avatar>    
                 </Col>
                 <Col align="middle">      
-                    <Button size='small'>Logout</Button>
+                    <Button size='small' onClick={()=>dispatch(logout())}>Logout</Button>
                 </Col>
                
             </Row>
