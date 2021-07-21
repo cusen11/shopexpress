@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Row, Col, Card,Typography  } from 'antd'; 
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -6,6 +6,8 @@ import { login } from './LoginSlice'
 
 function Login() {  
     const dispatch = useDispatch()
+    const [ hidden , setHidden ] = useState(true) 
+    const [load, setLoad] = useState(0)
     const onFinish = (values) => {  
         axios(
             {
@@ -17,22 +19,23 @@ function Login() {
                 data:values
             })
           .then(res => {
-            dispatch(login(res.data))
+            dispatch(login(res.data)) 
           })
           .catch(function (error) {
-            console.log(error);
+            setHidden(false) 
+            setLoad(0) 
           });
     }; 
     const { Title } = Typography;
     const style={
         height: "100vh"
-    } 
+    }  
     return (
         <Row justify="center" align="middle" style={style}>
             <Col x2={12} md={8} > 
                 <Card >
                     <Title type="primary" level={2} align="center">Login</Title><br/>
-                    <Form name="basic" labelCol={{ span: 8}}
+                    <Form name="basic" align='center' labelCol={{ span: 8}}
                         wrapperCol={{ span: 16}}
                         initialValues={{ remember: true}}
                         onFinish={onFinish} 
@@ -48,8 +51,15 @@ function Login() {
                         >
                             <Input.Password />
                         </Form.Item> 
+                        <Typography.Text  
+                        hidden = { hidden }
+                        italic={true} 
+                        type='warning' 
+                        style={{textAlign:'right', display: 'block'}}
+                        > Sai tên đăng nhập hoặc mật khẩu </Typography.Text>
+                        <br/>
                         <Form.Item wrapperCol={{ offset: 8,span: 16,}} >
-                            <Button type="primary" htmlType="submit">
+                            <Button loading={load} onClick={()=> setLoad(200)} type="primary" htmlType="submit">
                             Submit
                             </Button>
                         </Form.Item>
