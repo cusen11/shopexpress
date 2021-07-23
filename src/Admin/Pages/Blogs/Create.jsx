@@ -24,7 +24,7 @@ function Create(props) {
         formData.append('description', description) 
         formData.append('content', content)  
         formData.append('category', category) 
-        formData.append('image', image) 
+        formData.append('thumbnail', image) 
        
         const config = {
             headers:{
@@ -70,7 +70,7 @@ function Create(props) {
             <Input name='title' onChange={(e)=> setTitle(e.target.value)} placeholder="Basic usage" />
             <Input.TextArea name='description' rows={4} placeholder='Giới thiệu sơ về bài viết' onChange={(e)=> setDesctription(e.target.value)} />   
             <input onChange={(e) => setImage(e.target.files[0]) } type='file'/><br/>
-            <Select name='image' defaultValue="Làm đẹp" style={{ width: 120 }} onChange={(value)=> setCategory(value)}>
+            <Select name='category' defaultValue="Làm đẹp" style={{ width: 120 }} onChange={(value)=> setCategory(value)}>
                 <Select.Option value="Làm đẹp">Làm đẹp</Select.Option>
                 <Select.Option value="Thời trang">Thời trang</Select.Option> 
                 <Select.Option value="Model">Model</Select.Option> 
