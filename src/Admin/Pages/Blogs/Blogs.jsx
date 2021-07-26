@@ -153,11 +153,12 @@ function Blogs() {
                                         src={dataDetails.thumbnail}
                                     /> 
                                     <br/>
+                                    <Text>Trạng thái: {dataDetails.status ? 'Công bố' : 'Riêng tư'}</Text><br/>
                                     <Text>Mô tả: {dataDetails.description}</Text>  
                                     <br/>
                                     <div dangerouslySetInnerHTML={{__html: dataDetails.content}}/>
                                     <br/>
-                                    <Button>Cập nhật</Button>
+                                    <Button>Sửa</Button>
                                     <Button type='primary' danger onClick={() => handleDeleteBlog(dataDetails._id)} > Xóa </Button>
                                 </Col>  
                                 : 

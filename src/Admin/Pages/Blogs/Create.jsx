@@ -1,4 +1,4 @@
-import { Select,Button,Input  } from 'antd'; 
+import { Select,Button,Input, Radio  } from 'antd'; 
 import React, { useState } from 'react'; 
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill'; 
@@ -16,6 +16,7 @@ function Create(props) {
     
     const [load, setLoad] = useState(0)
 
+    const [radio, setRadio] = useState(true);
     const [ title , setTitle ] = useState()
     const [ description , setDesctription ] = useState()
     const [ content , setContent ] = useState()
@@ -33,10 +34,7 @@ function Create(props) {
         .then(async res=>{  
             uploadBlog(res.data.secure_url)
         }) 
-        .catch(err => console.log(err))
-
-       
-
+        .catch(err => console.log(err)) 
     } 
     const uploadBlog = (imageUrl) =>{ 
         const data = {
@@ -44,7 +42,8 @@ function Create(props) {
             'description': description, 
             'content': content, 
             'thumbnail': imageUrl,   
-            'category': category, 
+            'category': category,
+            'status': radio 
         }    
         axios(
             {
@@ -59,6 +58,8 @@ function Create(props) {
                 alert('Thêm bài viết thành công!!!')
                 setLoad(0)
                 changeVisableAdd()
+                
+                console.log(res.data)
                
             }).catch((error) => {
                 console.log(error)
@@ -91,10 +92,16 @@ function Create(props) {
     const onChangeContent = (content, delta, source, editor) =>{
         setContent(content)  
     } 
-    
+
+    const onChangeRadio = e => { 
+      setRadio(e.target.value);
+    };
     return (
         <>
-
+            <Radio.Group onChange={onChangeRadio} value={radio}>
+                <Radio value={true}>Công bố</Radio>
+                <Radio value={false}>Riêng tư</Radio> 
+            </Radio.Group>
             <Input name='title' onChange={(e)=> setTitle(e.target.value)} placeholder="Basic usage" /><br/>
             <Input.TextArea name='description' rows={4} placeholder='Giới thiệu sơ về bài viết' onChange={(e)=> setDesctription(e.target.value)} /> <br/>  
             <input 
