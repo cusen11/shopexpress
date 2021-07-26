@@ -12,12 +12,13 @@ function Blogs() {
     const { Title,Text } = Typography 
     const [page, setPage] = useState(1)
     const [ data, setData ] = useState() 
+    const [refresh, setRefresh] = useState(false)
     const [dataDetails, setDataDetails] = useState()
     const [visible, setVisible] = useState(false);   
     const [visibleAdd, setVisibleAdd] = useState(false); 
 
     const PaginationChange = (page) =>{
-        setPage(page)
+        setPage(page) 
     }
     const token = useSelector(state=> state.login.value.accessToken) || null
     useEffect(()=>{
@@ -33,9 +34,10 @@ function Blogs() {
             }
         }
         axios(link, option).then(res=>{ 
-            setData(res.data)  
+            setData(res.data) 
+            setRefresh(false)  
         })  
-    },[page])
+    },[page,refresh])
     const handleClick = (id) =>{
         axios(
             {
@@ -65,6 +67,27 @@ function Blogs() {
     }
     const handleAddnew = () => {
         setVisibleAdd(true);
+    }
+    
+    const handleDeleteBlog = (id) =>{
+        const confirm = window.confirm('Bạn có muốn xóa bài viết này không?')
+        if(confirm){
+            axios({
+                method:'delete',
+                url:`https://sendeptraidb.herokuapp.com/api/blog/remove/${id}`,
+                headers:{ 
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res=>{ 
+                alert('Xóa thành công!!!')
+                setVisible(false) 
+                setRefresh(true)
+            }).catch(err=> console.log(err))
+        }
+        else{
+            return
+        }
+
     }
     return (
         <Layout className="site-layout" style={{overflow:'hidden' }}> 
@@ -135,6 +158,7 @@ function Blogs() {
                                     <div dangerouslySetInnerHTML={{__html: dataDetails.content}}/>
                                     <br/>
                                     <Button>Cập nhật</Button>
+                                    <Button type='primary' danger onClick={() => handleDeleteBlog(dataDetails._id)} > Xóa </Button>
                                 </Col>  
                                 : 
                                 [...Array(10)].map((item,index) =>
@@ -144,11 +168,14 @@ function Blogs() {
                     </Drawer>
                 </Content>
                 {data? <Row gutter={10} justify='center' align='middle'>
-                    <Pagination  
+                    {
+                        data.totalItem >= 10 ? 
+                        <Pagination  
                         defaultCurrent={data?.currentPage || 1}
                         total={data?.totalItem}
                         onChange={PaginationChange}
-                    /> 
+                    />: ''
+                    } 
                 </Row> :''}
                 <Drawer width="80%"
                  title='Thêm mới tin'
@@ -157,8 +184,11 @@ function Blogs() {
                  onClose={onCloseAddnew}
                  visible={visibleAdd}
                 >
-                    <Create 
-                        changeVisable = { (m) => setVisibleAdd(m) }/>
+                    <Create  
+                        changeVisable = { (m, t) => {
+                            setVisibleAdd(m)
+                            setRefresh(t)
+                        } }/>
                 </Drawer>
         </Layout>
        

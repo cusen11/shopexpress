@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 Quill.register('modules/imageResize', ImageResize);
 
 
-function Create(props) { 
+function EditBlog(props) { 
     
     
     const [load, setLoad] = useState(0)
@@ -45,7 +45,8 @@ function Create(props) {
             'content': content, 
             'thumbnail': imageUrl,   
             'category': category, 
-        }    
+        }   
+        console.log(data)
         axios(
             {
                 method:'post',
@@ -123,4 +124,4 @@ function Create(props) {
     );
 }
 
-export default Create;
+export default EditBlog;
