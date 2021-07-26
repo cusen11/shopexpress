@@ -8,7 +8,7 @@ function Login() {
     const dispatch = useDispatch()
     const [ hidden , setHidden ] = useState(true) 
     const [load, setLoad] = useState(0)
-    const onFinish = (values) => {  
+    const onFinish = (values) => {   
         axios(
             {
                 method:'post',

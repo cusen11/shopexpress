@@ -100,7 +100,7 @@ function Blogs() {
                                     <Col>
                                     <Image preview={false}
                                         width={80}
-                                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                        src={ item.thumbnail? item.thumbnail : 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'}
                                     />
                                     </Col>
                                     <Col> 
@@ -127,12 +127,12 @@ function Blogs() {
                                 <Col xs={24} md={24}>  
                                     <Image preview={false}
                                         width={200}
-                                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                        src={dataDetails.thumbnail}
                                     /> 
                                     <br/>
                                     <Text>Mô tả: {dataDetails.description}</Text>  
                                     <br/>
-                                    <Text>Content: {dataDetails.content}</Text>
+                                    <div dangerouslySetInnerHTML={{__html: dataDetails.content}}/>
                                     <br/>
                                     <Button>Cập nhật</Button>
                                 </Col>  
@@ -157,7 +157,8 @@ function Blogs() {
                  onClose={onCloseAddnew}
                  visible={visibleAdd}
                 >
-                    <Create/>
+                    <Create 
+                        changeVisable = { (m) => setVisibleAdd(m) }/>
                 </Drawer>
         </Layout>
        
