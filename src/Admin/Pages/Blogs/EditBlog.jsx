@@ -1,4 +1,4 @@
-import { Select,Button,Input  } from 'antd'; 
+import { Select,Button,Input, Radio  } from 'antd'; 
 import React, { useState } from 'react'; 
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill'; 
@@ -12,17 +12,17 @@ Quill.register('modules/imageResize', ImageResize);
 
 
 function EditBlog(props) { 
-    
-    
+    const { data } = props    
+    console.log(data)
     const [load, setLoad] = useState(0)
-
+    const [ radio, setRadio ] = useState(true);
     const [ title , setTitle ] = useState()
     const [ description , setDesctription ] = useState()
     const [ content , setContent ] = useState()
     const [ image , setImage ] = useState() 
     const [ category , setCategory ] = useState()
     const token = useSelector(state=> state.login.value.accessToken) || null
-    const handleClickAdd = async () =>{
+    const handleClickEdit = async () =>{
         setLoad(2000)
         const formUpload = new FormData()
         formUpload.append('file', image)
@@ -33,41 +33,11 @@ function EditBlog(props) {
         .then(async res=>{  
             uploadBlog(res.data.secure_url)
         }) 
-        .catch(err => console.log(err))
-
-       
-
+        .catch(err => console.log(err)) 
     } 
     const uploadBlog = (imageUrl) =>{ 
-        const data = {
-            'title': title,
-            'description': description, 
-            'content': content, 
-            'thumbnail': imageUrl,   
-            'category': category, 
-        }   
-        console.log(data)
-        axios(
-            {
-                method:'post',
-                url:'https://sendeptraidb.herokuapp.com/api/blog/add',
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                data
-            }).then((res) => {
-                alert('Thêm bài viết thành công!!!')
-                setLoad(0)
-                changeVisableAdd()
-               
-            }).catch((error) => {
-                console.log(error)
-        });
-    }
-    const changeVisableAdd = () => {
-        props.changeVisable(false, true) 
-    }
+        console.log('thao tác sửa')
+    } 
     const modules = {
         toolbar: [
             [{ 'header': [1, 2, false] }],
@@ -92,18 +62,24 @@ function EditBlog(props) {
     const onChangeContent = (content, delta, source, editor) =>{
         setContent(content)  
     } 
-    
+    const onChangeRadio = e => { 
+        setRadio(e.target.value);
+      };
     return (
         <>
-
-            <Input name='title' onChange={(e)=> setTitle(e.target.value)} placeholder="Basic usage" /><br/>
-            <Input.TextArea name='description' rows={4} placeholder='Giới thiệu sơ về bài viết' onChange={(e)=> setDesctription(e.target.value)} /> <br/>  
+            <Radio.Group onChange={onChangeRadio} defaultValue={data.status}>
+                <Radio value={true}>Công bố</Radio>
+                <Radio value={false}>Riêng tư</Radio> 
+            </Radio.Group> 
+            <Input name='title' defaultValue={data.title} onChange={(e)=> setTitle(e.target.value)} placeholder="Basic usage" /><br/>
+            <Input.TextArea name='description' defaultValue={data.description} rows={4} placeholder='Giới thiệu sơ về bài viết' onChange={(e)=> setDesctription(e.target.value)} /> <br/>  
+            <img src={data.thumbnail} alt="" />
             <input 
                 onChange={(e) => setImage(e.target.files[0]) } 
                 type='file' 
                 accept='image/png, image/jpeg, image/svg, image/jpge'/>
             <br/><br/>
-            <Select name='category' defaultValue="Khác" style={{ width: 120 }} onChange={(value)=> setCategory(value)}>
+            <Select name='category' defaultValue={data.category} style={{ width: 120 }} onChange={(value)=> setCategory(value)}>
                 <Select.Option value="Làm đẹp">Làm đẹp</Select.Option>
                 <Select.Option value="Thời trang">Thời trang</Select.Option> 
                 <Select.Option value="Model">Model</Select.Option> 
@@ -111,6 +87,7 @@ function EditBlog(props) {
             </Select><br/>
             <div className="text-editor">
                 <ReactQuill theme="snow"
+                            defaultValue={data.content}
                             modules={modules}
                             formats={formats}
                             onChange = {onChangeContent}
@@ -119,7 +96,7 @@ function EditBlog(props) {
                 </ReactQuill>            
             </div>
             <br/> 
-            <Button type='primary' loading={load} onClick={handleClickAdd} >Thêm</Button>
+            <Button type='primary' loading={load} onClick={handleClickEdit} >Cập nhật</Button>
         </>
     );
 }

@@ -1,9 +1,10 @@
-import { Layout, Row, Col, Typography, Image, Pagination, Skeleton, Button, Drawer, Divider} from 'antd';  
+import { Layout, Row, Col, Typography, Image, Pagination, Skeleton, Button, Drawer, Divider, Input} from 'antd';  
 import Search from 'antd/lib/input/Search'; 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'; 
 import Create from './Create';
+import EditBlog from './EditBlog';
 
     
 function Blogs() { 
@@ -16,6 +17,7 @@ function Blogs() {
     const [dataDetails, setDataDetails] = useState()
     const [visible, setVisible] = useState(false);   
     const [visibleAdd, setVisibleAdd] = useState(false); 
+    const [edit, setEdit] = useState(false)
 
     const PaginationChange = (page) =>{
         setPage(page) 
@@ -89,6 +91,11 @@ function Blogs() {
         }
 
     }
+
+    const handleEdit = (id) =>{
+        console.log(id)
+        setEdit(true)
+    }
     return (
         <Layout className="site-layout" style={{overflow:'hidden' }}> 
                 <Content style={{ margin: '0 16px'}}>   
@@ -147,20 +154,22 @@ function Blogs() {
                     >
                         {
                             dataDetails !== undefined ? 
-                                <Col xs={24} md={24}>  
-                                    <Image preview={false}
-                                        width={200}
-                                        src={dataDetails.thumbnail}
-                                    /> 
-                                    <br/>
-                                    <Text>Trạng thái: {dataDetails.status ? 'Công bố' : 'Riêng tư'}</Text><br/>
-                                    <Text>Mô tả: {dataDetails.description}</Text>  
-                                    <br/>
-                                    <div dangerouslySetInnerHTML={{__html: dataDetails.content}}/>
-                                    <br/>
-                                    <Button>Sửa</Button>
-                                    <Button type='primary' danger onClick={() => handleDeleteBlog(dataDetails._id)} > Xóa </Button>
-                                </Col>  
+                                !edit ? <Col xs={24} md={24}>  
+                                            <Image preview={false}
+                                                width={200}
+                                                src={dataDetails.thumbnail}
+                                            /> 
+                                            <br/>
+                                            <Text>Trạng thái: {dataDetails.status ? 'Công bố' : 'Riêng tư'}</Text> 
+                                            <br/>
+                                            <Input name='title' onChange={(e)=> console.log(e.target.value)} placeholder="Basic usage" />
+                                            <br/>
+                                            <div dangerouslySetInnerHTML={{__html: dataDetails.content}}/>
+                                            <br/>
+                                            <Button onClick={()=>handleEdit(dataDetails._id)}>Sửa</Button>
+                                            <Button type='primary' danger onClick={() => handleDeleteBlog(dataDetails._id)} > Xóa </Button>
+                                        </Col>  :
+                                        <EditBlog data = {dataDetails}/>
                                 : 
                                 [...Array(10)].map((item,index) =>
                                     <Skeleton key={index} active />
