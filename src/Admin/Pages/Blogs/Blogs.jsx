@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Typography, Image, Pagination, Skeleton, Button, Drawer, Divider, Input} from 'antd';  
+import { Layout, Row, Col, Typography, Image, Pagination, Skeleton, Button, Drawer, Divider} from 'antd';  
 import Search from 'antd/lib/input/Search'; 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ function Blogs() {
     const [refresh, setRefresh] = useState(false)
     const [dataDetails, setDataDetails] = useState()
     const [visible, setVisible] = useState(false);   
-    const [visibleAdd, setVisibleAdd] = useState(false); 
+    const [visibleAdd, setVisibleAdd] = useState(false);  
     const [edit, setEdit] = useState(false)
 
     const PaginationChange = (page) =>{
@@ -160,16 +160,21 @@ function Blogs() {
                                                 src={dataDetails.thumbnail}
                                             /> 
                                             <br/>
-                                            <Text>Trạng thái: {dataDetails.status ? 'Công bố' : 'Riêng tư'}</Text> 
-                                            <br/>
-                                            <Input name='title' onChange={(e)=> console.log(e.target.value)} placeholder="Basic usage" />
+                                            <Text>Trạng thái: {dataDetails.status ? 'Công bố' : 'Riêng tư'}</Text>  
                                             <br/>
                                             <div dangerouslySetInnerHTML={{__html: dataDetails.content}}/>
                                             <br/>
                                             <Button onClick={()=>handleEdit(dataDetails._id)}>Sửa</Button>
                                             <Button type='primary' danger onClick={() => handleDeleteBlog(dataDetails._id)} > Xóa </Button>
                                         </Col>  :
-                                        <EditBlog data = {dataDetails}/>
+                                        <EditBlog 
+                                        data = {dataDetails}
+                                        changeVisableEdit = { (m, t, x) => {
+                                            setVisible(m)
+                                            setRefresh(t)
+                                            setEdit(false)
+                                        } }
+                                        />
                                 : 
                                 [...Array(10)].map((item,index) =>
                                     <Skeleton key={index} active />

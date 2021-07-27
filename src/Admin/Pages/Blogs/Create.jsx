@@ -44,7 +44,8 @@ function Create(props) {
             'thumbnail': imageUrl,   
             'category': category,
             'status': radio 
-        }    
+        }  
+        console.log(content)  
         axios(
             {
                 method:'post',

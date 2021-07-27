@@ -12,15 +12,15 @@ Quill.register('modules/imageResize', ImageResize);
 
 
 function EditBlog(props) { 
-    const { data } = props    
-    console.log(data)
+    const { data } = props   
     const [load, setLoad] = useState(0)
-    const [ radio, setRadio ] = useState(true);
-    const [ title , setTitle ] = useState()
-    const [ description , setDesctription ] = useState()
-    const [ content , setContent ] = useState()
-    const [ image , setImage ] = useState() 
-    const [ category , setCategory ] = useState()
+    const [ imageChange, setImageChange] = useState(false)
+    const [ radio, setRadio ] = useState(data.status);
+    const [ title , setTitle ] = useState(data.title)
+    const [ description , setDesctription ] = useState(data.description)
+    const [ content , setContent ] = useState(data.content)
+    const [ image , setImage ] = useState(data.thumbnail) 
+    const [ category , setCategory ] = useState(data.category)
     const token = useSelector(state=> state.login.value.accessToken) || null
     const handleClickEdit = async () =>{
         setLoad(2000)
@@ -29,15 +29,50 @@ function EditBlog(props) {
         formUpload.append('upload_preset', 'iiyoqzoi')
         formUpload.append('cloud_name', 'senclound') 
 
-        axios.post('https://api.cloudinary.com/v1_1/senclound/image/upload',formUpload)
-        .then(async res=>{  
-            uploadBlog(res.data.secure_url)
-        }) 
-        .catch(err => console.log(err)) 
+        if(imageChange){ 
+            axios.post('https://api.cloudinary.com/v1_1/senclound/image/upload',formUpload)
+            .then(async res=>{  
+                uploadBlog(res.data.secure_url)
+                changeVisableEdit()
+            }) 
+            .catch(err => console.log(err)) 
+        }
+        else{
+            uploadBlog(image) 
+            changeVisableEdit()
+        }
     } 
     const uploadBlog = (imageUrl) =>{ 
-        console.log('thao tác sửa')
+        const dataEdit = {
+            'title': title,
+            'description': description, 
+            'content': content, 
+            'thumbnail': imageUrl,   
+            'category': category,
+            'status': radio 
+        }    
+        axios(
+            {
+                method:'put',
+                url:`https://sendeptraidb.herokuapp.com/api/blog/edit/${data._id}`,
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                data: dataEdit
+            }).then((res) => {
+                alert('Sửa bài viết thành công!!!')
+                setLoad(0)   
+               
+            }).catch((error) => {
+                console.log(error)
+        });
     } 
+
+    const changeVisableEdit = () => {
+        props.changeVisableEdit(false, true, false) 
+
+    }
     const modules = {
         toolbar: [
             [{ 'header': [1, 2, false] }],
@@ -75,7 +110,12 @@ function EditBlog(props) {
             <Input.TextArea name='description' defaultValue={data.description} rows={4} placeholder='Giới thiệu sơ về bài viết' onChange={(e)=> setDesctription(e.target.value)} /> <br/>  
             <img src={data.thumbnail} alt="" />
             <input 
-                onChange={(e) => setImage(e.target.files[0]) } 
+                onChange={(e) => 
+                    {
+                        setImageChange(true)
+                        setImage(e.target.files[0])
+                    }
+                 } 
                 type='file' 
                 accept='image/png, image/jpeg, image/svg, image/jpge'/>
             <br/><br/>
