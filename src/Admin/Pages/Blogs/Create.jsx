@@ -1,5 +1,5 @@
 import { Select,Button,Input, Radio  } from 'antd'; 
-import React, { useState } from 'react'; 
+import React, { useRef, useState } from 'react'; 
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill'; 
 
@@ -13,9 +13,8 @@ Quill.register('modules/imageResize', ImageResize);
 
 function Create(props) { 
     
-    
-    const [load, setLoad] = useState(0)
-
+    let quillRef = useRef(null)
+    const [load, setLoad] = useState(0) 
     const [radio, setRadio] = useState(true);
     const [ title , setTitle ] = useState()
     const [ description , setDesctription ] = useState()
@@ -69,25 +68,64 @@ function Create(props) {
     const changeVisableAdd = () => {
         props.changeVisable(false, true) 
     }
+    const imageHandler = (image, callback) => {
+        var range = quillRef.getEditor().getSelection() || 0;
+        console.log(range) 
+        quillRef.getEditor().insertText(range.index, 'Hello', 'bold', true); 
+    }
+
+
+
+    const CustomToolbar = () => (
+        <div id="toolbar">
+          <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option selected></option>
+          </select>
+          <button className="ql-bold"></button>
+          <button className="ql-italic"></button>
+          <select className="ql-color">
+            <option value="red"></option>
+            <option value="green"></option>
+            <option value="blue"></option>
+            <option value="orange"></option>
+            <option value="violet"></option>
+            <option value="#d0d1d2"></option>
+            <option selected></option>
+          </select>
+          <button className="ql-image">
+            
+          </button>
+        </div>
+      )
+
     const modules = {
-        toolbar: [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline','strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-            ['link', 'image'],
-            ['clean']
-        ],
+        // toolbar: [
+        //     [{ 'header': [1, 2, false] }],
+        //     ['bold', 'italic', 'underline','strike', 'blockquote'],
+        //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        //     ['link', 'image'],
+        //     ['clean']
+        // ],
         imageResize: {
             parchment: Quill.import('parchment'),
             modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
+        }, 
+        toolbar: {
+        container: "#toolbar",
+        handlers: {
+            'image': imageHandler
         }
+  }
+       
     }
-
+   
     const formats = [
-        'header',
+        'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
-        'link', 'image'
+        'link', 'color',
     ] 
 
     const onChangeContent = (content, delta, source, editor) =>{
@@ -117,10 +155,12 @@ function Create(props) {
                 <Select.Option value="Khác">Khác</Select.Option>
             </Select><br/>
             <div className="text-editor">
+                <CustomToolbar />
                 <ReactQuill theme="snow"
                             modules={modules}
                             formats={formats}
-                            onChange = {onChangeContent}
+                            onChange = {onChangeContent} 
+                            ref={(el) => { quillRef = el }}
                             >
                             
                 </ReactQuill>            
