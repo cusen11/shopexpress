@@ -1,11 +1,7 @@
 import React, { useRef } from 'react'; 
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill'; 
-import axios from 'axios';
-
-import Quill from 'quill'; 
- 
-
+import axios from 'axios'; 
 
 function QuillEditor(props) {
     const { urlAPI } = props
@@ -30,10 +26,6 @@ function QuillEditor(props) {
     }
  
     const modules = { 
-        imageResize: {
-            parchment: Quill.import('parchment'),
-            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
-        }, 
         toolbar: {
             container:  [
                 [{ 'header': [1, 2, false] }],
@@ -66,8 +58,7 @@ function QuillEditor(props) {
                             formats={formats}
                             onChange = {onChangeContent} 
                             ref={(el) => { quillRef = el }}
-                            >
-                            
+                            > 
                 </ReactQuill>            
             </div>
         </>
