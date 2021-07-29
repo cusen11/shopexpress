@@ -1,19 +1,13 @@
 import { Select,Button,Input, Radio  } from 'antd'; 
-import React, { useRef, useState } from 'react'; 
-import 'react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill'; 
-
-import Quill from 'quill';
-import ImageResize from 'quill-image-resize-module-react';
+import React, { useState } from 'react'; 
+import 'react-quill/dist/quill.snow.css'; 
+ 
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
-Quill.register('modules/imageResize', ImageResize);
-
+import QuillEditor from '../../Components/Editor/QuillEditor';  
 
 function Create(props) { 
-    
-    let quillRef = useRef(null)
+     
     const [load, setLoad] = useState(0) 
     const [radio, setRadio] = useState(true);
     const [ title , setTitle ] = useState()
@@ -43,8 +37,7 @@ function Create(props) {
             'thumbnail': imageUrl,   
             'category': category,
             'status': radio 
-        }  
-        console.log(content)  
+        }   
         axios(
             {
                 method:'post',
@@ -57,9 +50,7 @@ function Create(props) {
             }).then((res) => {
                 alert('Thêm bài viết thành công!!!')
                 setLoad(0)
-                changeVisableAdd()
-                
-                console.log(res.data)
+                changeVisableAdd() 
                
             }).catch((error) => {
                 console.log(error)
@@ -67,71 +58,7 @@ function Create(props) {
     }
     const changeVisableAdd = () => {
         props.changeVisable(false, true) 
-    }
-    const imageHandler = (image, callback) => {
-        var range = quillRef.getEditor().getSelection() || 0;
-        console.log(range) 
-        quillRef.getEditor().insertText(range.index, 'Hello', 'bold', true); 
-    }
-
-
-
-    const CustomToolbar = () => (
-        <div id="toolbar">
-          <select className="ql-header" defaultValue={""} onChange={e => e.persist()}>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option selected></option>
-          </select>
-          <button className="ql-bold"></button>
-          <button className="ql-italic"></button>
-          <select className="ql-color">
-            <option value="red"></option>
-            <option value="green"></option>
-            <option value="blue"></option>
-            <option value="orange"></option>
-            <option value="violet"></option>
-            <option value="#d0d1d2"></option>
-            <option selected></option>
-          </select>
-          <button className="ql-image">
-            
-          </button>
-        </div>
-      )
-
-    const modules = {
-        // toolbar: [
-        //     [{ 'header': [1, 2, false] }],
-        //     ['bold', 'italic', 'underline','strike', 'blockquote'],
-        //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-        //     ['link', 'image'],
-        //     ['clean']
-        // ],
-        imageResize: {
-            parchment: Quill.import('parchment'),
-            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
-        }, 
-        toolbar: {
-        container: "#toolbar",
-        handlers: {
-            'image': imageHandler
-        }
-  }
-       
-    }
-   
-    const formats = [
-        'header', 'font', 'size',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'color',
-    ] 
-
-    const onChangeContent = (content, delta, source, editor) =>{
-        setContent(content)  
-    } 
-
+    }  
     const onChangeRadio = e => { 
       setRadio(e.target.value);
     };
@@ -154,17 +81,12 @@ function Create(props) {
                 <Select.Option value="Model">Model</Select.Option> 
                 <Select.Option value="Khác">Khác</Select.Option>
             </Select><br/>
-            <div className="text-editor">
-                <CustomToolbar />
-                <ReactQuill theme="snow"
-                            modules={modules}
-                            formats={formats}
-                            onChange = {onChangeContent} 
-                            ref={(el) => { quillRef = el }}
-                            >
-                            
-                </ReactQuill>            
-            </div>
+            <QuillEditor
+                    urlAPI = 'https://api.cloudinary.com/v1_1/senclound/image/upload'
+                    onChangeEditor = {(data) => {
+                        setContent(data) 
+                    }}
+                />
             <br/> 
             <Button type='primary' loading={load} onClick={handleClickAdd} >Thêm</Button>
         </>

@@ -1,14 +1,10 @@
 import { Select,Button,Input, Radio  } from 'antd'; 
 import React, { useState } from 'react'; 
-import 'react-quill/dist/quill.snow.css';
-import ReactQuill from 'react-quill'; 
-
-import Quill from 'quill';
-import ImageResize from 'quill-image-resize-module-react';
+import 'react-quill/dist/quill.snow.css'; 
+ 
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
-Quill.register('modules/imageResize', ImageResize);
+import QuillEditor from '../../Components/Editor/QuillEditor'; 
 
 
 function EditBlog(props) { 
@@ -72,30 +68,6 @@ function EditBlog(props) {
     const changeVisableEdit = () => {
         props.changeVisableEdit(false, true, false) 
 
-    }
-    const modules = {
-        toolbar: [
-            [{ 'header': [1, 2, false] }],
-            ['bold', 'italic', 'underline','strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-            ['link', 'image'],
-            ['clean']
-        ],
-        imageResize: {
-            parchment: Quill.import('parchment'),
-            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
-        }
-    }
-
-    const formats = [
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image'
-    ] 
-
-    const onChangeContent = (content, delta, source, editor) =>{
-        setContent(content)  
     } 
     const onChangeRadio = e => { 
         setRadio(e.target.value);
@@ -125,16 +97,12 @@ function EditBlog(props) {
                 <Select.Option value="Model">Model</Select.Option> 
                 <Select.Option value="Khác">Khác</Select.Option>
             </Select><br/>
-            <div className="text-editor">
-                <ReactQuill theme="snow"
-                            defaultValue={data.content}
-                            modules={modules}
-                            formats={formats}
-                            onChange = {onChangeContent}
-                            >
-                            
-                </ReactQuill>            
-            </div>
+            <QuillEditor
+                    urlAPI = 'https://api.cloudinary.com/v1_1/senclound/image/upload'
+                    onChangeEditor = {(data) => {
+                        setContent(data) 
+                    }}
+                />
             <br/> 
             <Button type='primary' loading={load} onClick={handleClickEdit} >Cập nhật</Button>
         </>

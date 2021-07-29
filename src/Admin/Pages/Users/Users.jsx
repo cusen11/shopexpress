@@ -4,13 +4,13 @@ import {
     Image,Button,Drawer
 
 } from 'antd';  
-import { useState } from 'react';
+import { useState } from 'react'; 
 
     
 function Users() {   
     const { Content } = Layout; 
     const { Title} = Typography  
-    const [item, setItem] = useState()
+    const [item, setItem] = useState() 
     const handleClickUser = (i) =>{
         console.log(i)
         setItem(i)
@@ -28,7 +28,7 @@ function Users() {
                     <Col xs={24} md={24}>   
                         <Row guttet={10} >  
                             {
-                                [...Array(50)].map((e, i) => 
+                                [...Array(10)].map((e, i) => 
                                     <Col  justify="center" 
                                     align='middle' key={i} md={4} xs={4} style={{marginBottom: '10px'}}>
                                         <Avatar onClick={()=> handleClickUser(i)} 
@@ -43,6 +43,7 @@ function Users() {
                         </Row>
                     </Col> 
                 </Row> 
+                 
                 <Drawer width="50%"
                         title={`Nguyễn Văn Chuối ${item}` }
                         placement="right"
