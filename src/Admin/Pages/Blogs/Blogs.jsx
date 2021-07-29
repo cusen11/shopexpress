@@ -18,6 +18,9 @@ function Blogs() {
     const [visible, setVisible] = useState(false);   
     const [visibleAdd, setVisibleAdd] = useState(false);  
     const [edit, setEdit] = useState(false)
+    const [ search , setSearch] = useState(false)
+    const [ dataSearch, setDataSearch ] = useState()
+    const [ paginationHide, setPaginationHide ] = useState(false)
 
     const PaginationChange = (page) =>{
         setPage(page) 
@@ -64,13 +67,30 @@ function Blogs() {
     const onCloseAddnew = () => {
         setVisibleAdd(false);
     }; 
-    const onSearch = value => {
-        console.log(value);
+    const onSearch = value => { 
+        if(value === ''){
+            setSearch(false) 
+            setPaginationHide(false)
+        }
+        else{
+            setSearch(true)
+            axios({
+                method:'post',
+                url: 'https://sendeptraidb.herokuapp.com/api/search-blog', 
+                data:{
+                    query: value
+                }
+            }).then(res => {
+                setDataSearch(res.data) 
+                setPaginationHide(true)
+            })
+            .catch(err => console.log(err))
+        }
+        
     }
     const handleAddnew = () => {
         setVisibleAdd(true);
     }
-    
     const handleDeleteBlog = (id) =>{
         const confirm = window.confirm('Bạn có muốn xóa bài viết này không?')
         if(confirm){
@@ -119,31 +139,71 @@ function Blogs() {
                 </Row>
                 <Row>
                     {
-                    data ? 
-                        data?.results.map((item) =>
-                            <Col xs={24} md={24} key={item._id}>
-                                <Divider dashed style={{margin:'10px 0'}}/>
-                                <Row 
-                                justify='start'
-                                gutter='10'
-                                >
-                                    <Col>
-                                    <Image preview={false}
-                                        width={80}
-                                        src={ item.thumbnail? item.thumbnail : 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'}
-                                    />
+                        !search ? 
+                           
+                            <div>
+                            {
+                                data ? 
+                                    data.results.map((item) =>
+                                        <Col xs={24} md={24} key={item._id}>
+                                            <Divider dashed style={{margin:'10px 0'}}/>
+                                            <Row 
+                                            justify='start'
+                                            gutter='10'
+                                            >
+                                                <Col>
+                                                <Image preview={false}
+                                                    width={80}
+                                                    src={ item.thumbnail? item.thumbnail : 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'}
+                                                />
+                                                </Col>
+                                                <Col> 
+                                                    <Title onClick={()=> handleClick(item._id)} style={{cursor:'pointer'}} level={3}>{item.title}</Title>
+                                                    <Text>{item.description}</Text>
+                                                </Col>
+                                            </Row>
+                                            
                                     </Col>
-                                    <Col> 
-                                        <Title onClick={()=> handleClick(item._id)} style={{cursor:'pointer'}} level={3}>{item.title}</Title>
-                                        <Text>{item.description}</Text>
+                                    ) :
+                                [...Array(10)].map((item,index) =>
+                                    <Skeleton key={index} active />
+                                )
+                            }
+                            </div> 
+                            : 
+                            <div>
+                                {
+                                    dataSearch ? 
+                                    dataSearch.results.map((item) =>
+                                        <Col xs={24} md={24} key={item._id}>
+                                            <Divider dashed style={{margin:'10px 0'}}/>
+                                            <Row 
+                                            justify='start'
+                                            gutter='10'
+                                            >
+                                                <Col>
+                                                <Image preview={false}
+                                                    width={80}
+                                                    src={ item.thumbnail? item.thumbnail : 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'}
+                                                />
+                                                </Col>
+                                                <Col> 
+                                                    <Title onClick={()=> handleClick(item._id)} style={{cursor:'pointer'}} level={3}>{item.title}</Title>
+                                                    <Text>{item.description}</Text>
+                                                </Col>
+                                            </Row>
+                                            
                                     </Col>
-                                </Row>
-                                
-                        </Col>
-                        ) :
-                        [...Array(10)].map((item,index) =>
-                            <Skeleton key={index} active />
-                        )}
+                                    ) :
+                                [...Array(10)].map((item,index) =>
+                                    <Skeleton key={index} active />
+                                )
+                                }
+                            </div>
+                               
+                            
+                            
+                    }
                     </Row> 
                     <Drawer width="80%"
                         title={dataDetails!==undefined ? dataDetails.title : <Skeleton /> }
@@ -152,7 +212,7 @@ function Blogs() {
                         onClose={onClose}
                         visible={visible}
                     >
-                        {
+                        { 
                             dataDetails !== undefined ? 
                                 !edit ? <Col xs={24} md={24}>  
                                             <Image preview={false}
@@ -178,11 +238,11 @@ function Blogs() {
                                 : 
                                 [...Array(10)].map((item,index) =>
                                     <Skeleton key={index} active />
-                                )
+                                ) 
                         }
                     </Drawer>
                 </Content>
-                {data? <Row gutter={10} justify='center' align='middle'>
+                {data? <Row gutter={10} justify='center' hidden={paginationHide} align='middle'>
                     {
                         data.totalItem >= 10 ? 
                         <Pagination  

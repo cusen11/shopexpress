@@ -43,8 +43,7 @@ function Products() {
                 <Search placeholder="Tìm sản phẩm" onSearch={onSearch} enterButton style={{ width: 300 }} /> 
                 <Row gutter={30}> 
                     <Col xs={24} md={24}>   
-                        <Row> 
-                            <Paragraph italic style={{width:'100%'}}>Tên sản phẩm | Giá | Danh mục</Paragraph>
+                        <Row>  
                             {
                                 [...Array(20)].map((e, i) => 
                                     <Col key={i} md={24} xs={24}>
