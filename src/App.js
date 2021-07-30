@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import 'antd/dist/antd.css';
-import Login from './Admin/Components/Login/Login';  
-import HomePage from './Admin/Pages/HomePage/HomePage'; 
-import Nav from './Admin/Components/Navication/Nav';
-import Settings from './Admin/Pages/Settings/Setting';
-import Products from './Admin/Pages/Products/Products';
-import GiftCode from './Admin/Pages/GiftCode/GiftCode'; 
-import Header from './Admin/Components/Header/Header';
+
 import Users from './Admin/Pages/Users/Users';
 import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout } from 'antd'; 
 import "lightgallery.js/dist/css/lightgallery.css";
 import Blogs from './Admin/Pages/Blogs/Blogs';  
 import { useSelector } from 'react-redux';
+
+const Login = React.lazy(()=> import('./Admin/Components/Login/Login'));  
+const HomePage = React.lazy(()=> import('./Admin/Pages/HomePage/HomePage'));  
+const Settings = React.lazy(()=> import('./Admin/Pages/Settings/Setting'));
+const Products = React.lazy(()=> import('./Admin/Pages/Products/Products'));
+const GiftCode = React.lazy(()=> import('./Admin/Pages/GiftCode/GiftCode')); 
+const Header = React.lazy(()=> import('./Admin/Components/Header/Header'));
+const Nav = React.lazy(()=> import('./Admin/Components/Navication/Nav'));
+
+
 function App() {
   
   const { Content, Footer } = Layout 
@@ -21,7 +25,8 @@ function App() {
     <>
       {!loginState ? <Login/> 
       : 
-        <Router>   
+        <Router> 
+          <Suspense fallback={<div>Loading...</div>}>
           <Layout>
             <Nav/> 
             <Layout>
@@ -51,7 +56,7 @@ function App() {
               <Footer/>
             </Layout>
           </Layout>
-          
+          </Suspense>  
       </Router>  
       } 
     </>
