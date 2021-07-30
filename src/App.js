@@ -23,10 +23,11 @@ function App() {
   const loginState = useSelector(store => store.login.value.success)  
   return (  
     <>
+      <Suspense fallback={<div>Loading...</div>}>
       {!loginState ? <Login/> 
       : 
         <Router> 
-          <Suspense fallback={<div>Loading...</div>}>
+          
           <Layout>
             <Nav/> 
             <Layout>
@@ -56,9 +57,11 @@ function App() {
               <Footer/>
             </Layout>
           </Layout>
-          </Suspense>  
+         
       </Router>  
+      
       } 
+      </Suspense>  
     </>
   );
 }
