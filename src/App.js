@@ -4,8 +4,7 @@ import 'antd/dist/antd.css';
 import Users from './Admin/Pages/Users/Users';
 import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
 import { Layout } from 'antd'; 
-import "lightgallery.js/dist/css/lightgallery.css";
-import Blogs from './Admin/Pages/Blogs/Blogs';  
+import "lightgallery.js/dist/css/lightgallery.css"; 
 import { useSelector } from 'react-redux';
 import Login from './Admin/Components/Login/Login';
 import Nav from './Admin/Components/Navication/Nav';
@@ -15,6 +14,7 @@ const HomePage = React.lazy(()=> import('./Admin/Pages/HomePage/HomePage'));
 const Settings = React.lazy(()=> import('./Admin/Pages/Settings/Setting'));
 const Products = React.lazy(()=> import('./Admin/Pages/Products/Products'));
 const GiftCode = React.lazy(()=> import('./Admin/Pages/GiftCode/GiftCode')); 
+const Blogs = React.lazy(()=> import('./Admin/Pages/Blogs/Blogs')); 
 
 
 function App() {
