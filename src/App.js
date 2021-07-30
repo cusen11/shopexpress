@@ -7,14 +7,14 @@ import { Layout } from 'antd';
 import "lightgallery.js/dist/css/lightgallery.css";
 import Blogs from './Admin/Pages/Blogs/Blogs';  
 import { useSelector } from 'react-redux';
+import Login from './Admin/Components/Login/Login';
+import Nav from './Admin/Components/Navication/Nav';
+import Header from './Admin/Components/Header/Header';
 
-const Login = React.lazy(()=> import('./Admin/Components/Login/Login'));  
 const HomePage = React.lazy(()=> import('./Admin/Pages/HomePage/HomePage'));  
 const Settings = React.lazy(()=> import('./Admin/Pages/Settings/Setting'));
 const Products = React.lazy(()=> import('./Admin/Pages/Products/Products'));
 const GiftCode = React.lazy(()=> import('./Admin/Pages/GiftCode/GiftCode')); 
-const Header = React.lazy(()=> import('./Admin/Components/Header/Header'));
-const Nav = React.lazy(()=> import('./Admin/Components/Navication/Nav'));
 
 
 function App() {
@@ -23,9 +23,10 @@ function App() {
   const loginState = useSelector(store => store.login.value.success)  
   return (  
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      
       {!loginState ? <Login/> 
       : 
+      
         <Router> 
           
           <Layout>
@@ -34,10 +35,11 @@ function App() {
               <Header/>
               <Content style={{minHeight:'100vh'}}>
                 <Switch>
+                  <Suspense fallback={<div>Loading...</div>}>
                   <Route exact path="/">
                     <HomePage/>
                   </Route>  
-                  <Route path="/settings">
+                  <Route path="/settings"> 
                     <Settings />
                   </Route>  
                   <Route path="/products">
@@ -48,20 +50,21 @@ function App() {
                   </Route> 
                   <Route path="/users">
                     <Users />
-                  </Route>/
+                  </Route>
                   <Route path="/blogs">
                     <Blogs />
                   </Route>
-                </Switch>
+                  </Suspense>  
+                </Switch> 
               </Content> 
               <Footer/>
             </Layout>
           </Layout>
          
       </Router>  
-      
+     
       } 
-      </Suspense>  
+     
     </>
   );
 }
