@@ -1,22 +1,48 @@
 import { 
     Layout, Row, Input,
     Col, Typography, Button, 
-    Image, Drawer,Pagination  
+    Image, Drawer,Pagination,
 
 } from 'antd';   
-import { useState } from 'react';
-import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery"; 
 
     
 function Products() {  
     const { Content } = Layout; 
+    const [page, setPage] = useState(1)
+    const [ data, setData ] = useState()
+    const [ search , setSearch] = useState(false)
+    const [ dataSearch, setDataSearch ] = useState()
+    const [refresh, setRefresh] = useState(false)
     const { Search } = Input
-    const { Text, Title, Paragraph} = Typography
-    const [item, setItem] = useState()
-    const [visible, setVisible] = useState(false);  
+    const { Text, Title, Paragraph} = Typography 
+    const [visible, setVisible] = useState(false);
+    const [ dataProduct, setDataProduct ] = useState()  
+    
+    const [ paginationHide, setPaginationHide ] = useState(false)
     const onClose = () => {
       setVisible(false);
     }; 
+ 
+    useEffect(()=>{
+        const link = `https://sendeptraidb.herokuapp.com/api/product `
+        const option = {
+            method: 'GET',
+            headers:{
+               "Content-Type": "application/json"
+            },
+            data:{ 
+                "page": page,
+                "limit": 10
+            }
+        }
+        axios(link, option).then(res=>{ 
+            setData(res.data) 
+            setRefresh(false)  
+        })  
+    },[page,refresh])
     const styleItem = {
         width: '95%',
         height: '35px',
@@ -26,46 +52,96 @@ function Products() {
         borderRadius: '5px',
         padding: '0 10px',
     }
-    const onSearch = (value) =>{
-        console.log(value)
-    }
-
-    const onShowSizeChange = (current, pageSize) =>{
-        console.log(current, pageSize);
-      }
+    const onSearch = value => { 
+        if(value === ''){
+            setSearch(false) 
+            setPaginationHide(false)
+        }
+        else{
+            setSearch(true)
+            axios({
+                method:'post',
+                url: 'https://sendeptraidb.herokuapp.com/api/search-products', 
+                data:{
+                    query: value
+                }
+            }).then(res => {
+                setDataSearch(res.data) 
+                setPaginationHide(true) 
+            })
+            .catch(err => console.log(err))
+        }
+        
+    } 
     const PaginationChange = (page) =>{
-        console.log(page);
+        setPage(page) 
     }
     return (
         <Layout className="site-layout"> 
             <Content style={{ margin: '0 16px' }}>
                 <Title type='success' level={1}>Products</Title>  
-                <Search placeholder="Tìm sản phẩm" onSearch={onSearch} enterButton style={{ width: 300 }} /> 
+                <Col xs={12} md={12}>
+                        <Search
+                            placeholder="Tìm sản phẩm"
+                            allowClear
+                            enterButton="Search"
+                            size="middle" 
+                            onSearch={onSearch}
+                        /> 
+                    </Col> 
                 <Row gutter={30}> 
                     <Col xs={24} md={24}>   
                         <Row>  
                             {
-                                [...Array(20)].map((e, i) => 
-                                    <Col key={i} md={24} xs={24}>
-                                        <Title level={5} style={styleItem}> 
-                                                <Text  
-                                                ellipsis
-                                                style={{width:"70%", cursor:"pointer"}}
-                                                onClick={()=>{
-                                                    setItem(i+1) 
-                                                    setVisible(true)
-                                                }}
-                                                >
-                                                    {i+1}. Dầu gội đầu hương cam xả | 200.000đ | Thời trang
-                                                </Text>  
-                                        </Title>  
-                                    </Col>
-                                )
+                                !search?
+                                <Col md={24} sm={24}>
+                                    {
+                                        data?.map((product) => 
+                                        <Col key={product._id} md={24} xs={24}>
+                                            <Title level={5} style={styleItem}> 
+                                                    <Text  
+                                                    ellipsis
+                                                    style={{width:"70%", cursor:"pointer"}}
+                                                    onClick={()=>{ 
+                                                        setVisible(true)
+                                                        setDataProduct(product)
+                                                        console.log(product)
+                                                    }}
+                                                    >
+                                                        {product.name}
+                                                    </Text>  
+                                            </Title>  
+                                        </Col>
+                                    )
+                                    }
+                                </Col>
+                                :
+                                <Col md={24} sm={24}>
+                                    {
+                                        dataSearch?.results.map((product) => 
+                                        <Col key={product._id} md={24} xs={24}>
+                                            <Title level={5} style={styleItem}> 
+                                                    <Text  
+                                                    ellipsis
+                                                    style={{width:"70%", cursor:"pointer"}}
+                                                    onClick={()=>{ 
+                                                        setVisible(true)
+                                                        setDataProduct(product)
+                                                        console.log(product)
+                                                    }}
+                                                    >
+                                                        {product.name}
+                                                    </Text>  
+                                            </Title>  
+                                        </Col>
+                                    )
+                                    }
+                                </Col>
                             }
                         </Row>
                     </Col>
                     <Drawer width="60%"
-                        title={`Dầu gội đầu hương cam xả ${item}`}
+                        title={dataProduct?.name}
                         placement="right"
                         closable={false}
                         onClose={onClose}
@@ -74,16 +150,16 @@ function Products() {
                         <Col xs={24} md={24}>  
                             <Image preview={false}
                                 width={200}
-                                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                src={dataProduct?.images}
                             /> 
-                            <Paragraph>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas laboriosam dicta totam vel. Optio fugiat nulla eum. Iusto est sed rem ad ab quod placeat. Nulla illo doloremque reprehenderit dolorem.</Paragraph> 
-                            <Title level={5}>Thương hiệu : Nhật bản</Title>
-                            <Title level={5}>Số lượng : 1499</Title>
-                            <Title level={5}>Giá : 50000</Title>
-                            <Title level={5}>Khuyến mãi : 20%</Title>
-                            <Title level={5}>Category : Quần áo</Title>
+                            <Paragraph>{dataProduct?.description}</Paragraph> 
+                            <Title level={5}>Thương hiệu : Nhật bản</Title> 
+                            <Title level={5}>Size : Cập nhật</Title>
+                            <Title level={5}>Giá : {dataProduct?.price}</Title>
+                            <Title level={5}>Khuyến mãi : Cập nhật..</Title>
+                            <Title level={5}>Category :{dataProduct?.category}</Title>
                             
-                            <Button size='middle' type="primary">Edit Product</Button>  
+                            <Button size='middle' type="primary" onClick={()=> console.log(dataProduct?._id)}>Edit Product</Button>  
                             <Title level={4}>List Image</Title>
                             <LightgalleryProvider>
                                 <Row gutter="10">
@@ -106,15 +182,16 @@ function Products() {
                         </Col> 
                     </Drawer>  
                 </Row>
-                <Row gutter={10} justify='center' align='middle'>
-                    <Pagination 
-                        showSizeChanger
-                        onShowSizeChange={onShowSizeChange}
-                        defaultCurrent={3}
-                        total={500}
+                {data? <Row gutter={10} justify='center' hidden={paginationHide} align='middle'>
+                    {
+                        data.totalItem >= 10 ? 
+                        <Pagination  
+                        defaultCurrent={data?.currentPage || 1}
+                        total={data?.totalItem}
                         onChange={PaginationChange}
-                    /> 
-                </Row>
+                    />: ''
+                    } 
+                </Row> :''}
                 
             </Content> 
         </Layout>

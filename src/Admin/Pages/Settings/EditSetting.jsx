@@ -73,7 +73,7 @@ function EditSetting(props) {
     }
     return (
         <>
-            <Text><img src={props.data?.info.logo} alt="" /></Text>
+            <Text><img width='300px' src={props.data?.info.logo} alt="" /></Text>
             
             <input type="file" onChange={(e)=> {
                 setImage(e.target.files[0])
