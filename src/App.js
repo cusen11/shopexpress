@@ -9,12 +9,14 @@ import { useSelector } from 'react-redux';
 import Login from './Admin/Components/Login/Login';
 import Nav from './Admin/Components/Navication/Nav';
 import Header from './Admin/Components/Header/Header';
+import EditProduct from './Admin/Pages/Products/EditProduct';
 
 const HomePage = React.lazy(()=> import('./Admin/Pages/HomePage/HomePage'));  
 const Settings = React.lazy(()=> import('./Admin/Pages/Settings/Setting'));
 const Products = React.lazy(()=> import('./Admin/Pages/Products/Products'));
 const GiftCode = React.lazy(()=> import('./Admin/Pages/GiftCode/GiftCode')); 
 const Blogs = React.lazy(()=> import('./Admin/Pages/Blogs/Blogs')); 
+const CreateProduct = React.lazy(()=> import('./Admin/Pages/Products/Create'));
 
 
 function App() {
@@ -53,6 +55,12 @@ function App() {
                   </Route>
                   <Route path="/blogs">
                     <Blogs />
+                  </Route>
+                  <Route path="/create-product">
+                    <CreateProduct />
+                  </Route>
+                  <Route path="/edit-product">
+                    <EditProduct />
                   </Route>
                   </Suspense>  
                 </Switch> 

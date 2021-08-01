@@ -7,9 +7,12 @@ import {
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery"; 
+import { useHistory } from 'react-router-dom';
 
     
 function Products() {  
+    const history = useHistory()
+
     const { Content } = Layout; 
     const [page, setPage] = useState(1)
     const [ data, setData ] = useState()
@@ -159,7 +162,7 @@ function Products() {
                             <Title level={5}>Khuyến mãi : Cập nhật..</Title>
                             <Title level={5}>Category :{dataProduct?.category}</Title>
                             
-                            <Button size='middle' type="primary" onClick={()=> console.log(dataProduct?._id)}>Edit Product</Button>  
+                            <Button size='middle' type="primary" onClick={()=> history.push('/edit-product',{data: dataProduct} )}>Edit Product</Button>  
                             <Title level={4}>List Image</Title>
                             <LightgalleryProvider>
                                 <Row gutter="10">
