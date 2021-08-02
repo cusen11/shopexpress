@@ -133,7 +133,7 @@ function Products() {
                                                     style={{width:"70%", cursor:"pointer"}}
                                                     onClick={()=>{ 
                                                         setVisible(true)
-                                                        setDataProduct(product) 
+                                                        setDataProduct(product)  
                                                     }}
                                                     >
                                                         {product.name}
@@ -177,7 +177,7 @@ function Products() {
                         <Col xs={24} md={24}>  
                             <Image preview={false}
                                 width={200}
-                                src={dataProduct?.images}
+                                src={dataProduct?.images.url}
                             /> 
                             <Paragraph>{dataProduct?.description}</Paragraph> 
                             <Title level={5}>Thương hiệu : Nhật bản</Title> 

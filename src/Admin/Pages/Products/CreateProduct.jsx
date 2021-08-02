@@ -27,7 +27,8 @@ function CreateProduct(props) {
         if(imageChange){ 
             axios.post('https://api.cloudinary.com/v1_1/senclound/image/upload',formUpload)
             .then(async res=>{  
-                uploadProduct(res.data.secure_url) 
+                uploadProduct(res.data.secure_url, res.data.public_id) 
+                console.log(res.data)
             }) 
             .catch(err => console.log(err)) 
         }
@@ -35,12 +36,13 @@ function CreateProduct(props) {
             uploadProduct(image)  
         }
     } 
-    const uploadProduct = (imageUrl) =>{  
-        const dataEdit = {
+    const uploadProduct = (imageUrl, idImage) =>{  
+        const dataCreate = {
             'name': name,
             'description': description,
             'price': price,
-            'images': imageUrl, 
+            'url': imageUrl, 
+            'idImage': idImage,
             'category': category,
             'size': size
         }
@@ -53,7 +55,7 @@ function CreateProduct(props) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }, 
-                data:dataEdit
+                data:dataCreate
             }).then((res) => {
                 alert('Thêm bài viết thành công!!!')
                 setLoad(0)   
@@ -88,7 +90,7 @@ function CreateProduct(props) {
                 <Select.Option value="Model">Model</Select.Option> 
                 <Select.Option value="Khác">Khác</Select.Option>
             </Select><br/>
-            <Button type='primary' loading={load} onClick={handleClickAdd} >Cập nhật</Button>
+            <Button type='primary' loading={load} onClick={handleClickAdd} >Thêm mới</Button>
         </>
     );
 }
