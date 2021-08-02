@@ -242,7 +242,8 @@ function Blogs() {
                         }
                     </Drawer>
                 </Content>
-                {data? <Row gutter={10} justify='center' hidden={paginationHide} align='middle'>
+                { data? 
+                    <Row gutter={10} justify='center' hidden={paginationHide} align='middle'>
                     {
                         data.totalItem >= 10 ? 
                         <Pagination  
@@ -251,7 +252,8 @@ function Blogs() {
                         onChange={PaginationChange}
                     />: ''
                     } 
-                </Row> :''}
+                    </Row> :'Loading...'
+                }
                 <Drawer width="80%"
                  title='Thêm mới tin'
                  placement="right"
@@ -265,8 +267,7 @@ function Blogs() {
                             setRefresh(t)
                         } }/>
                 </Drawer>
-        </Layout>
-       
+        </Layout> 
     );
 }
 
