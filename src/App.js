@@ -16,7 +16,7 @@ const Settings = React.lazy(()=> import('./Admin/Pages/Settings/Setting'));
 const Products = React.lazy(()=> import('./Admin/Pages/Products/Products'));
 const GiftCode = React.lazy(()=> import('./Admin/Pages/GiftCode/GiftCode')); 
 const Blogs = React.lazy(()=> import('./Admin/Pages/Blogs/Blogs')); 
-const CreateProduct = React.lazy(()=> import('./Admin/Pages/Products/Create'));
+const CreateProduct = React.lazy(()=> import('./Admin/Pages/Products/CreateProduct'));
 
 
 function App() {

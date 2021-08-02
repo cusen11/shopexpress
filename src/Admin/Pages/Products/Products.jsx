@@ -7,6 +7,7 @@ import {
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery"; 
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
     
@@ -25,6 +26,7 @@ function Products() {
     const [ dataProduct, setDataProduct ] = useState()  
     
     const [ paginationHide, setPaginationHide ] = useState(false)
+    const token = useSelector(state=> state.login.value.accessToken) || null
     const onClose = () => {
       setVisible(false);
     }; 
@@ -79,6 +81,27 @@ function Products() {
     const PaginationChange = (page) =>{
         setPage(page) 
     }
+    const deleteProduct = (id) =>{
+        try {
+            axios({
+                method:'delete',
+                url:`https://sendeptraidb.herokuapp.com/api/product/delete/${id}`,
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res => 
+                {
+                
+                    setVisible(false)
+                    setRefresh(!refresh)
+                    alert('Xóa thành công')
+                }  
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <Layout className="site-layout"> 
             <Content style={{ margin: '0 16px' }}>
@@ -91,8 +114,11 @@ function Products() {
                             size="middle" 
                             onSearch={onSearch}
                         /> 
+                        <Button type='primary' onClick={()=>history.push('/create-product')} >Tạo mới</Button>
                     </Col> 
-                <Row gutter={30}> 
+                {
+                    data? 
+                    <Row gutter={30}> 
                     <Col xs={24} md={24}>   
                         <Row>  
                             {
@@ -107,8 +133,7 @@ function Products() {
                                                     style={{width:"70%", cursor:"pointer"}}
                                                     onClick={()=>{ 
                                                         setVisible(true)
-                                                        setDataProduct(product)
-                                                        console.log(product)
+                                                        setDataProduct(product) 
                                                     }}
                                                     >
                                                         {product.name}
@@ -129,8 +154,7 @@ function Products() {
                                                     style={{width:"70%", cursor:"pointer"}}
                                                     onClick={()=>{ 
                                                         setVisible(true)
-                                                        setDataProduct(product)
-                                                        console.log(product)
+                                                        setDataProduct(product) 
                                                     }}
                                                     >
                                                         {product.name}
@@ -180,11 +204,12 @@ function Products() {
                             </LightgalleryProvider>  
                             <Button size='middle' type="primary">Edit List Image</Button> 
                             <Row gutter={10} justify='end' align='middle'>
-                            <Button size='middle' type="primary" danger>Delete</Button> 
+                            <Button size='middle' type="primary" danger onClick={()=> deleteProduct(dataProduct._id)}>Delete</Button> 
                             </Row> 
                         </Col> 
                     </Drawer>  
-                </Row>
+                </Row>:'Loading...'
+                }
                 {data? <Row gutter={10} justify='center' hidden={paginationHide} align='middle'>
                     {
                         data.totalItem >= 10 ? 
