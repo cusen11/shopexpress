@@ -41,7 +41,7 @@ function GiftCode() {
         else{
             console.log(search)
         }
-    }
+    }  
     const token = useSelector(state=> state.login.value.accessToken) || null
     useEffect(()=>{
         const link = `https://sendeptraidb.herokuapp.com/api/gridcode`
@@ -57,12 +57,14 @@ function GiftCode() {
         }
         axios(link, option).then(res=>{ 
             setData(res.data) 
-            setRefresh(false)
-            
-            nameCode.current.state.value = ''
-            discountCode.current.state.value = ''
+            setRefresh(false) 
+            resetForm()
         })  
     },[page,refresh]) 
+    const resetForm = () =>{ 
+        nameCode.current.state.value = ''
+        discountCode.current.state.value = ''
+    }
     const PaginationChange = (page) =>{
         setPage(page)
     } 
@@ -123,7 +125,7 @@ function GiftCode() {
                         <Search placeholder="Tìm Gift" onSearch={onSearch} enterButton style={{ width: 300 }} />
                     </Col>
                     <Col>
-                    <Input type="text" ref={nameCode} placeholder="Nhập gridcode" onChange={(e)=> setNewCode(e.target.value)} />
+                    <Input type="text" ref={nameCode} placeholder="Nhập tên gridcode" onChange={(e)=> setNewCode(e.target.value)} />
                      </Col>
                     <Col>
                       <Input type="number" ref={discountCode} placeholder="Giảm giá ( % )" onChange={(e)=> setDiscount(e.target.value)} />
