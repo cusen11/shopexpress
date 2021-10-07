@@ -79,7 +79,7 @@ function Users() {
         console.log(user)
     }  
     const fullDay = (time) => {
-        const date = new Date('2021-08-05T09:43:36.213Z')
+        const date = new Date(time)
         return date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear()
     }
     const info = (user) =>{
